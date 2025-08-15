@@ -1,0 +1,2596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BhimLaw AI - Comprehensive Legal Assistant</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --success-color: #28a745;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --info-color: #17a2b8;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            min-height: 100vh;
+            color: var(--dark-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 10px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            color: white;
+            padding: 25px 20px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            border: 1px solid rgba(255,255,255,0.2);
+            flex-shrink: 0;
+        }
+
+        .header h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: clamp(1rem, 2.5vw, 1.2rem);
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        /* Main Interface */
+        .main-interface {
+            flex: 1;
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 600px;
+            max-height: calc(100vh - 180px);
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            background: var(--light-color);
+            border-bottom: 1px solid #dee2e6;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            min-height: 60px;
+            flex-shrink: 0;
+        }
+
+        .nav-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .nav-tab {
+            padding: 12px 16px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: #6c757d;
+            white-space: nowrap;
+            transition: var(--transition);
+            border-bottom: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            min-width: 120px;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .nav-tab:hover {
+            background: rgba(102, 126, 234, 0.1);
+            color: var(--primary-color);
+        }
+
+        .nav-tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+            background: white;
+        }
+
+        .nav-tab i {
+            font-size: 14px;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            flex: 1;
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .tab-content.active {
+            display: flex;
+        }
+
+        /* Chat Interface */
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            min-height: 0;
+        }
+
+        .chat-header {
+            background: var(--primary-color);
+            color: white;
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            flex-shrink: 0;
+            min-height: 70px;
+        }
+
+        .agent-info {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .agent-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .agent-info p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            line-height: 1.3;
+        }
+
+        .chat-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+        }
+
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            background: #fafafa;
+            scroll-behavior: smooth;
+            min-height: 300px;
+            max-height: calc(100vh - 400px);
+        }
+
+        .message {
+            display: flex;
+            margin-bottom: 20px;
+            align-items: flex-start;
+            gap: 12px;
+            animation: fadeInUp 0.3s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .message.user .message-avatar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .message.agent .message-avatar {
+            background: linear-gradient(135deg, var(--success-color), #20c997);
+            color: white;
+        }
+
+        .message-content {
+            flex: 1;
+            max-width: calc(100% - 60px);
+        }
+
+        .message-bubble {
+            padding: 15px 18px;
+            border-radius: 18px;
+            word-wrap: break-word;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        .message.user .message-bubble {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            margin-left: auto;
+        }
+
+        .message.agent .message-bubble {
+            background: white;
+            border: 1px solid #e9ecef;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            margin-top: 8px;
+        }
+
+        .message.user .message-time {
+            text-align: right;
+        }
+
+        /* Agent Suggestions */
+        .agent-suggestions {
+            background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+            border: 1px solid #bbdefb;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+
+        .suggestion-header {
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .suggestion-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+        }
+
+        .suggestion-item:last-child {
+            border-bottom: none;
+        }
+
+        .suggestion-info h4 {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .suggestion-info p {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        .suggestion-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .confidence-badge {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .confidence-high { background: var(--success-color); color: white; }
+        .confidence-medium { background: var(--warning-color); color: var(--dark-color); }
+        .confidence-low { background: var(--danger-color); color: white; }
+
+        .btn-switch {
+            background: var(--primary-color);
+            color: white;
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-switch:hover {
+            background: var(--secondary-color);
+        }
+
+        /* Chat Input */
+        .chat-input-container {
+            padding: 20px;
+            background: white;
+            border-top: 1px solid #e9ecef;
+            flex-shrink: 0;
+            min-height: 100px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+            width: 100%;
+        }
+
+        .chat-input {
+            flex: 1;
+            min-height: 50px;
+            max-height: 120px;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 25px;
+            font-size: 16px;
+            font-family: inherit;
+            resize: none;
+            outline: none;
+            transition: var(--transition);
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        .chat-input:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .send-button {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            min-width: 100px;
+            justify-content: center;
+        }
+
+        .send-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .send-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Loading States */
+        .typing-indicator {
+            display: none;
+            padding: 15px 20px;
+            font-style: italic;
+            color: #6c757d;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .typing-indicator.active {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .typing-dots {
+            display: flex;
+            gap: 4px;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            animation: typing 1.4s infinite ease-in-out;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Form Interface */
+        .form-container {
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .form-section {
+            margin-bottom: 25px;
+        }
+
+        .form-section h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        select.form-control {
+            cursor: pointer;
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d, #5a6268);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #5a6268, #495057);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(108, 117, 125, 0.3);
+        }
+
+        .btn-secondary:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Results Display */
+        .results-container {
+            background: var(--light-color);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .results-container.show {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        .result-section {
+            margin-bottom: 20px;
+        }
+
+        .result-section h4 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        .result-content {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        /* File Upload Styles */
+        .file-upload-container {
+            position: relative;
+            border: 2px dashed #e9ecef;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            text-align: center;
+            transition: var(--transition);
+            background: #fafafa;
+        }
+
+        .file-upload-container:hover {
+            border-color: var(--primary-color);
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        .file-upload-container input[type="file"] {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-upload-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            color: #6c757d;
+        }
+
+        .file-upload-info i {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+
+        .file-upload-container.has-file {
+            border-color: var(--success-color);
+            background: rgba(40, 167, 69, 0.05);
+        }
+
+        .file-upload-container.has-file .file-upload-info {
+            color: var(--success-color);
+        }
+
+        .file-upload-container.has-file i {
+            color: var(--success-color);
+        }
+
+        /* Agent Tabs Specific */
+        .agent-tabs {
+            background: #e9ecef;
+            border-bottom: 1px solid #dee2e6;
+            min-height: 50px;
+            flex-shrink: 0;
+        }
+
+        .agent-tabs .nav-tab {
+            padding: 10px 14px;
+            font-size: 12px;
+            min-width: 100px;
+            position: relative;
+        }
+
+        .agent-tabs .nav-tab span {
+            display: inline-block;
+        }
+
+        /* Improved Visual Elements */
+        .message-bubble {
+            position: relative;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .message.user .message-bubble::before {
+            content: '';
+            position: absolute;
+            right: -8px;
+            top: 15px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid var(--primary-color);
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+        }
+
+        .message.agent .message-bubble::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 15px;
+            width: 0;
+            height: 0;
+            border-right: 8px solid white;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+        }
+
+        /* Loading and Status Indicators */
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.85rem;
+            color: var(--success-color);
+            margin-top: 8px;
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .main-interface {
+                max-height: calc(100vh - 150px);
+            }
+
+            .chat-messages {
+                max-height: calc(100vh - 350px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 5px;
+            }
+
+            .header {
+                padding: 15px;
+                margin-bottom: 10px;
+            }
+
+            .nav-tab {
+                padding: 10px 12px;
+                font-size: 12px;
+                min-width: 90px;
+            }
+
+            .agent-tabs .nav-tab {
+                padding: 8px 10px;
+                font-size: 11px;
+                min-width: 80px;
+            }
+
+            .chat-header {
+                padding: 12px 15px;
+                min-height: 60px;
+            }
+
+            .chat-messages {
+                padding: 15px;
+                max-height: calc(100vh - 300px);
+            }
+
+            .input-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .send-button {
+                align-self: stretch;
+            }
+
+            .message-avatar {
+                width: 35px;
+                height: 35px;
+                font-size: 1rem;
+            }
+
+            .form-container {
+                padding: 20px;
+            }
+
+            .agent-info h3 {
+                font-size: 1rem;
+            }
+
+            .agent-info p {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .nav-tabs {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+            }
+
+            .nav-tab {
+                flex-shrink: 0;
+                min-width: 80px;
+                padding: 8px 10px;
+                font-size: 11px;
+            }
+
+            .agent-tabs .nav-tab {
+                min-width: 70px;
+                padding: 6px 8px;
+                font-size: 10px;
+            }
+
+            .chat-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+                padding: 10px 15px;
+            }
+
+            .chat-actions {
+                align-self: stretch;
+                justify-content: space-between;
+            }
+
+            .chat-messages {
+                padding: 10px;
+                max-height: calc(100vh - 280px);
+            }
+
+            .chat-input-container {
+                padding: 15px;
+                max-width: 100%;
+            }
+
+            .chat-input {
+                max-width: 100%;
+            }
+
+            .message-bubble {
+                padding: 12px 15px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1><i class="fas fa-balance-scale"></i> BhimLaw AI</h1>
+            <p>Your Comprehensive Legal Assistant - Powered by Advanced AI</p>
+        </div>
+
+        <!-- Main Interface -->
+        <div class="main-interface">
+            <!-- Navigation Tabs -->
+            <div class="nav-tabs">
+                <button class="nav-tab active" data-tab="chat">
+                    <i class="fas fa-comments"></i> Smart Chat
+                </button>
+                <button class="nav-tab" data-tab="analysis">
+                    <i class="fas fa-search"></i> Case Analysis
+                </button>
+            </div>
+
+            <!-- Chat Tab -->
+            <div class="tab-content active" id="chat-tab">
+                <div class="chat-container">
+                    <!-- Agent Selector -->
+                    <div class="nav-tabs agent-tabs">
+                        <button class="nav-tab agent-tab active" data-agent="property_violations">
+                            <i class="fas fa-building"></i> <span>Property</span>
+                        </button>
+                        <button class="nav-tab agent-tab" data-agent="environmental_health">
+                            <i class="fas fa-leaf"></i> <span>Environment</span>
+                        </button>
+                        <button class="nav-tab agent-tab" data-agent="employee_services">
+                            <i class="fas fa-users"></i> <span>Employee</span>
+                        </button>
+                        <button class="nav-tab agent-tab" data-agent="rti_transparency">
+                            <i class="fas fa-eye"></i> <span>RTI</span>
+                        </button>
+                        <button class="nav-tab agent-tab" data-agent="infrastructure_works">
+                            <i class="fas fa-road"></i> <span>Infrastructure</span>
+                        </button>
+                        <button class="nav-tab agent-tab" data-agent="encroachment_land">
+                            <i class="fas fa-map"></i> <span>Land</span>
+                        </button>
+                        <button class="nav-tab agent-tab" data-agent="licensing_trade">
+                            <i class="fas fa-store"></i> <span>Licensing</span>
+                        </button>
+                        <button class="nav-tab agent-tab" data-agent="slum_clearance">
+                            <i class="fas fa-home"></i> <span>Slum</span>
+                        </button>
+                        <button class="nav-tab agent-tab" data-agent="water_drainage">
+                            <i class="fas fa-tint"></i> <span>Water</span>
+                        </button>
+                        <button class="nav-tab agent-tab" data-agent="public_nuisance">
+                            <i class="fas fa-volume-up"></i> <span>Nuisance</span>
+                        </button>
+                    </div>
+
+                    <!-- Chat Header -->
+                    <div class="chat-header">
+                        <div class="agent-info">
+                            <h3 id="currentAgentName">Property & Building Violations Specialist</h3>
+                            <p id="currentAgentDesc">Property Law, Building Regulations, Municipal Law</p>
+                        </div>
+                        <div class="chat-actions">
+                            <button class="btn btn-outline" onclick="clearChat()">
+                                <i class="fas fa-trash"></i> Clear
+                            </button>
+                            <button class="btn btn-outline" onclick="exportChat()">
+                                <i class="fas fa-download"></i> Export
+                            </button>
+                            <button class="btn btn-outline" onclick="downloadPDF()" id="pdfDownloadBtn" style="display: none;">
+                                <i class="fas fa-file-pdf"></i> PDF
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Chat Messages -->
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="message agent">
+                            <div class="message-avatar">🤖</div>
+                            <div class="message-content">
+                                <div class="message-bubble">
+                                    <div style="margin-bottom: 15px;">
+                                        <strong style="color: var(--primary-color); font-size: 1.1rem;">
+                                            <i class="fas fa-balance-scale"></i> Welcome to BhimLaw AI!
+                                        </strong>
+                                    </div>
+
+                                    <p style="margin-bottom: 12px;">I'm your comprehensive legal assistant. I can help you with:</p>
+
+                                    <div style="margin: 12px 0; padding-left: 10px;">
+                                        <div style="margin: 6px 0;"><i class="fas fa-check-circle" style="color: var(--success-color); margin-right: 8px;"></i>General legal advice and consultation</div>
+                                        <div style="margin: 6px 0;"><i class="fas fa-check-circle" style="color: var(--success-color); margin-right: 8px;"></i>Case analysis and strategy</div>
+                                        <div style="margin: 6px 0;"><i class="fas fa-check-circle" style="color: var(--success-color); margin-right: 8px;"></i>Connect you with specialized agents</div>
+                                    </div>
+
+                                    <div style="margin-top: 15px; padding: 10px; background: rgba(102, 126, 234, 0.1); border-radius: 8px; border-left: 3px solid var(--primary-color);">
+                                        <i class="fas fa-lightbulb" style="color: var(--warning-color); margin-right: 6px;"></i>
+                                        <em>Please describe your legal issue, and I'll provide expert guidance!</em>
+                                    </div>
+                                </div>
+                                <div class="message-time" id="welcomeTime"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Typing Indicator -->
+                    <div class="typing-indicator" id="typingIndicator">
+                        <div class="typing-dots">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                        <span>Legal AI is analyzing your query...</span>
+                    </div>
+
+                    <!-- Chat Input -->
+                    <div class="chat-input-container">
+                        <div class="input-group">
+                            <div style="position: relative; flex: 1;">
+                                <textarea
+                                    id="chatInput"
+                                    class="chat-input"
+                                    placeholder="💬 Describe your legal issue in detail... (Press Enter to send, Shift+Enter for new line)"
+                                    rows="1"
+                                ></textarea>
+                                <div class="status-indicator" id="inputStatus" style="position: absolute; bottom: -25px; left: 10px; display: none;">
+                                    <i class="fas fa-circle pulse" style="font-size: 8px;"></i>
+                                    <span>BhimLaw AI is ready to help</span>
+                                </div>
+                            </div>
+                            <button class="send-button" id="sendButton" onclick="sendMessage()">
+                                <i class="fas fa-paper-plane"></i>
+                                <span>Send</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Case Analysis Tab -->
+            <div class="tab-content" id="analysis-tab">
+                <div class="form-container">
+                    <div class="form-section">
+                        <h3><i class="fas fa-search"></i> Legal Case Analysis</h3>
+
+                        <!-- Analysis Type Selector -->
+                        <div class="form-group">
+                            <label class="form-label">Analysis Type</label>
+                            <select class="form-control" id="analysisTypeSelector" onchange="toggleAnalysisType()">
+                                <option value="text">Text-based Analysis</option>
+                                <option value="pdf">PDF Case Analysis</option>
+                            </select>
+                        </div>
+
+                        <!-- Text-based Analysis Form -->
+                        <form id="analysisForm" style="display: block;">
+                            <div class="form-group">
+                                <label class="form-label">Service Type</label>
+                                <select class="form-control" name="service_type" id="serviceType" required>
+                                    <option value="">Select Service Type</option>
+                                    <option value="case_analysis">Case Analysis</option>
+                                    <option value="argument_construction">Argument Construction</option>
+                                    <option value="risk_assessment">Risk Assessment</option>
+                                    <option value="compliance_check">Compliance Check</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Legal Query</label>
+                                <textarea class="form-control" name="query" id="legalQuery" required
+                                    placeholder="Describe your legal case, issue, or question in detail..."></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Professional Type</label>
+                                <select class="form-control" name="professional_type" id="professionalType">
+                                    <option value="lawyer">Lawyer</option>
+                                    <option value="judge">Judge</option>
+                                    <option value="legal_consultant">Legal Consultant</option>
+                                    <option value="law_student">Law Student</option>
+                                    <option value="paralegal">Paralegal</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Jurisdiction</label>
+                                <select class="form-control" name="jurisdiction" id="jurisdiction">
+                                    <option value="India">India</option>
+                                    <option value="Delhi">Delhi</option>
+                                    <option value="Mumbai">Mumbai</option>
+                                    <option value="Bangalore">Bangalore</option>
+                                    <option value="Chennai">Chennai</option>
+                                    <option value="Kolkata">Kolkata</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Complexity Level</label>
+                                <select class="form-control" name="complexity_level" id="complexityLevel">
+                                    <option value="simple">Simple</option>
+                                    <option value="moderate" selected>Moderate</option>
+                                    <option value="complex">Complex</option>
+                                    <option value="highly_complex">Highly Complex</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Urgency Level</label>
+                                <select class="form-control" name="urgency_level" id="urgencyLevel">
+                                    <option value="low">Low</option>
+                                    <option value="normal" selected>Normal</option>
+                                    <option value="high">High</option>
+                                    <option value="critical">Critical</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn-primary">
+                                <i class="fas fa-search"></i> Analyze Case
+                            </button>
+                        </form>
+
+                        <!-- PDF Case Analysis Form -->
+                        <form id="pdfAnalysisForm" style="display: none;" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label class="form-label">Upload PDF Case Document</label>
+                                <div class="file-upload-container">
+                                    <input type="file" class="form-control" id="pdfFile" accept=".pdf" required>
+                                    <div class="file-upload-info">
+                                        <i class="fas fa-file-pdf"></i>
+                                        <span>Select a PDF file containing the legal case document</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Legal Query about the Case</label>
+                                <textarea class="form-control" id="pdfLegalQuery" required
+                                    placeholder="What specific legal question do you have about this case? (e.g., 'What are the key legal issues?', 'What precedents apply?', 'What is the court's reasoning?')"></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Analysis Focus</label>
+                                <select class="form-control" id="pdfAnalysisType">
+                                    <option value="comprehensive">Comprehensive Analysis</option>
+                                    <option value="summary">Case Summary</option>
+                                    <option value="legal_issues">Legal Issues Analysis</option>
+                                    <option value="precedents">Precedents & Citations</option>
+                                    <option value="reasoning">Court Reasoning</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Jurisdiction</label>
+                                <select class="form-control" id="pdfJurisdiction">
+                                    <option value="India">India</option>
+                                    <option value="Supreme Court of India">Supreme Court of India</option>
+                                    <option value="High Court">High Court</option>
+                                    <option value="District Court">District Court</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Case Complexity</label>
+                                <select class="form-control" id="pdfComplexity">
+                                    <option value="simple">Simple</option>
+                                    <option value="moderate" selected>Moderate</option>
+                                    <option value="complex">Complex</option>
+                                    <option value="highly_complex">Highly Complex</option>
+                                </select>
+                            </div>
+
+                            <button type="submit" class="btn-primary">
+                                <i class="fas fa-file-pdf"></i> Analyze PDF Case
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="results-container" id="analysisResults">
+                        <div class="result-section">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                <h4>Analysis Results</h4>
+                                <button id="downloadPdfBtn" class="btn-secondary" style="display: none;" onclick="downloadAnalysisPDF()">
+                                    <i class="fas fa-download"></i> Download PDF Report
+                                </button>
+                            </div>
+                            <div class="result-content" id="analysisContent"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentAgent = 'property_violations';
+        let sessionId = null;
+        let currentAnalysisSessionId = null;
+        let messageHistory = [];
+
+        // Agent configurations
+        const agentConfigs = {
+            property_violations: {
+                name: 'Property & Building Violations Specialist',
+                description: 'Property Law, Building Regulations, Municipal Law',
+                avatar: '🏗️',
+                endpoint: 'http://localhost:5001/api/specialized/analyze'
+            },
+            environmental_health: {
+                name: 'Environmental & Public Health Specialist',
+                description: 'Environmental Law, Public Health Regulations',
+                avatar: '🌱',
+                endpoint: 'http://localhost:5001/api/specialized/analyze'
+            },
+            employee_services: {
+                name: 'Employee & Service Matters Specialist',
+                description: 'Service Law, Employment Law, PF/Pension Rules',
+                avatar: '👥',
+                endpoint: 'http://localhost:5001/api/specialized/analyze'
+            },
+            rti_transparency: {
+                name: 'RTI & Transparency Specialist',
+                description: 'Right to Information Law, Transparency Compliance',
+                avatar: '📋',
+                endpoint: 'http://localhost:5001/api/specialized/analyze'
+            },
+            infrastructure_works: {
+                name: 'Infrastructure & Public Works Specialist',
+                description: 'Infrastructure Law, Public Works, Construction Disputes',
+                avatar: '🚧',
+                endpoint: 'http://localhost:5001/api/specialized/analyze'
+            },
+            encroachment_land: {
+                name: 'Encroachment & Land Specialist',
+                description: 'Land Law, Encroachment Removal, Eviction Proceedings',
+                avatar: '🏞️',
+                endpoint: 'http://localhost:5001/api/specialized/analyze'
+            },
+            licensing_trade: {
+                name: 'Licensing & Trade Regulation Specialist',
+                description: 'Trade License Law, Commercial Regulations, Vendor Management',
+                avatar: '🏪',
+                endpoint: 'http://localhost:5001/api/specialized/analyze'
+            },
+            slum_clearance: {
+                name: 'Slum Clearance & Resettlement Specialist',
+                description: 'Slum Rehabilitation Law, Resettlement Policies, Housing Rights',
+                avatar: '🏘️',
+                endpoint: 'http://localhost:5001/api/specialized/analyze'
+            },
+            water_drainage: {
+                name: 'Water & Drainage Specialist',
+                description: 'Water Supply Law, Drainage Systems, Municipal Water Services',
+                avatar: '💧',
+                endpoint: 'http://localhost:5001/api/specialized/analyze'
+            },
+            public_nuisance: {
+                name: 'Public Nuisance Specialist',
+                description: 'Public Nuisance Law, Noise Pollution, Animal Control',
+                avatar: '🔊',
+                endpoint: 'http://localhost:5001/api/specialized/analyze'
+            }
+        };
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+        });
+
+        function initializeApp() {
+            // Set welcome time
+            document.getElementById('welcomeTime').textContent = new Date().toLocaleTimeString();
+
+            // Initialize tab switching
+            initializeTabSwitching();
+
+            // Initialize agent switching
+            initializeAgentSwitching();
+
+            // Initialize chat functionality
+            initializeChatFunctionality();
+
+            // Initialize forms
+            initializeForms();
+
+            // Show status indicator after a short delay
+            setTimeout(() => {
+                const statusIndicator = document.getElementById('inputStatus');
+                if (statusIndicator) {
+                    statusIndicator.style.display = 'flex';
+                }
+            }, 1000);
+        }
+
+        function initializeTabSwitching() {
+            document.querySelectorAll('.nav-tab:not(.agent-tab)').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.dataset.tab;
+                    switchTab(tabId);
+                });
+            });
+        }
+
+        function switchTab(tabId) {
+            // Update tab buttons
+            document.querySelectorAll('.nav-tab:not(.agent-tab)').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`${tabId}-tab`).classList.add('active');
+        }
+
+        function initializeAgentSwitching() {
+            document.querySelectorAll('.agent-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const agentType = this.dataset.agent;
+                    switchAgent(agentType);
+                });
+            });
+        }
+
+        function switchAgent(agentType) {
+            if (agentType === currentAgent) return;
+
+            currentAgent = agentType;
+            const config = agentConfigs[agentType];
+
+            // Update active tab
+            document.querySelectorAll('.agent-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelector(`[data-agent="${agentType}"]`).classList.add('active');
+
+            // Update header
+            document.getElementById('currentAgentName').textContent = config.name;
+            document.getElementById('currentAgentDesc').textContent = config.description;
+
+            // Add agent switch message with consistent formatting
+            const switchMessage = `<div style="margin-bottom: 15px;">
+                <strong style="color: var(--primary-color); font-size: 1.1rem;">
+                    <i class="fas fa-exchange-alt"></i> Agent Switched
+                </strong>
+            </div>
+            <p style="margin-bottom: 12px;">You're now connected to <strong>${config.name}</strong></p>
+            <p style="margin-bottom: 12px; color: #6c757d; font-style: italic;">${config.description}</p>
+            <div style="margin-top: 15px; padding: 10px; background: rgba(102, 126, 234, 0.1); border-radius: 8px; border-left: 3px solid var(--primary-color);">
+                <i class="fas fa-lightbulb" style="color: var(--warning-color); margin-right: 6px;"></i>
+                <em>How can I assist you with your specialized legal matter?</em>
+            </div>`;
+            addMessage(switchMessage, 'agent', config.avatar);
+        }
+
+        function initializeChatFunctionality() {
+            const chatInput = document.getElementById('chatInput');
+
+            // Auto-resize textarea
+            chatInput.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+            });
+
+            // Enter key handler
+            chatInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+
+            if (!message) return;
+
+            // Validate message length (backend requires at least 10 characters)
+            if (message.length < 10) {
+                const validationMessage = `<div style="margin-bottom: 15px;">
+                    <strong style="color: var(--warning-color); font-size: 1.1rem;">
+                        <i class="fas fa-info-circle"></i> Message Too Short
+                    </strong>
+                </div>
+                <p style="margin-bottom: 12px;">Please provide more details about your legal issue.</p>
+                <div style="margin: 12px 0; padding: 10px; background: rgba(255, 193, 7, 0.1); border-radius: 8px; border-left: 3px solid var(--warning-color);">
+                    <strong style="color: var(--warning-color);">Your message must be at least 10 characters long to ensure I can provide accurate legal assistance.</strong>
+                </div>
+                <div style="margin-top: 15px; padding: 10px; background: rgba(102, 126, 234, 0.1); border-radius: 8px; border-left: 3px solid var(--primary-color);">
+                    <i class="fas fa-lightbulb" style="color: var(--primary-color); margin-right: 6px;"></i>
+                    <em>Try describing your legal situation in more detail, such as "I need help with a property dispute" or "What are my rights regarding employment termination?"</em>
+                </div>`;
+                addMessage(validationMessage, 'agent', agentConfigs[currentAgent].avatar);
+                return;
+            }
+
+            // Disable send button
+            const sendButton = document.getElementById('sendButton');
+            sendButton.disabled = true;
+            sendButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Sending...</span>';
+
+            // Add user message
+            addMessage(message, 'user', '👤');
+
+            // Clear input and reset height
+            input.value = '';
+            input.style.height = 'auto';
+
+            // Show typing indicator
+            document.getElementById('typingIndicator').classList.add('active');
+
+            try {
+                const config = agentConfigs[currentAgent];
+                let response;
+
+                console.log('Sending message:', message);
+                console.log('Current agent:', currentAgent);
+                console.log('Session ID:', sessionId);
+
+                if (currentAgent === 'general') {
+                    response = await fetch('http://localhost:5001/api/general/analyze', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            query: message,
+                            case_type: 'general_legal_matter',
+                            urgency_level: 'normal',
+                            session_id: sessionId,
+                            force_new_session: !sessionId
+                        })
+                    });
+                } else {
+                    response = await fetch('http://localhost:5001/api/specialized/analyze', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            query: message,
+                            case_type: currentAgent,
+                            session_id: sessionId,
+                            force_new_session: !sessionId
+                        })
+                    });
+                }
+
+                const data = await response.json();
+                console.log('Response status:', response.status);
+                console.log('Response data:', data);
+
+                if (data.success) {
+                    sessionId = data.session_id;
+
+                    let responseText = '';
+                    let suggestions = null;
+
+                    if (currentAgent === 'general') {
+                        responseText = formatGeneralResponse(data.data);
+                        suggestions = data.data.routing_recommendations || [];
+                    } else {
+                        responseText = formatSpecializedResponse(data.data);
+                    }
+
+                    addMessage(responseText, 'agent', config.avatar, suggestions);
+                } else {
+                    // Handle different types of error responses
+                    let errorText = 'Unknown error occurred';
+                    if (data.message) {
+                        errorText = data.message;
+                    } else if (data.detail) {
+                        if (Array.isArray(data.detail)) {
+                            // FastAPI validation errors
+                            errorText = data.detail.map(err => err.msg).join(', ');
+                        } else if (typeof data.detail === 'string') {
+                            errorText = data.detail;
+                        } else {
+                            errorText = JSON.stringify(data.detail);
+                        }
+                    }
+
+                    const errorMessage = `<div style="margin-bottom: 15px;">
+                        <strong style="color: var(--danger-color); font-size: 1.1rem;">
+                            <i class="fas fa-exclamation-triangle"></i> Error Occurred
+                        </strong>
+                    </div>
+                    <p style="margin-bottom: 12px;">I apologize, but I encountered an error while processing your request:</p>
+                    <div style="margin: 12px 0; padding: 10px; background: rgba(220, 53, 69, 0.1); border-radius: 8px; border-left: 3px solid var(--danger-color);">
+                        <strong style="color: var(--danger-color);">${errorText}</strong>
+                    </div>
+                    <div style="margin-top: 15px; padding: 10px; background: rgba(102, 126, 234, 0.1); border-radius: 8px; border-left: 3px solid var(--primary-color);">
+                        <i class="fas fa-info-circle" style="color: var(--primary-color); margin-right: 6px;"></i>
+                        <em>Please try rephrasing your question or contact support if the issue persists.</em>
+                    </div>`;
+                    addMessage(errorMessage, 'agent', config.avatar);
+                }
+
+            } catch (error) {
+                console.error('Error sending message:', error);
+                const technicalErrorMessage = `<div style="margin-bottom: 15px;">
+                    <strong style="color: var(--danger-color); font-size: 1.1rem;">
+                        <i class="fas fa-exclamation-triangle"></i> Technical Error
+                    </strong>
+                </div>
+                <p style="margin-bottom: 12px;">I apologize, but I encountered a technical error while processing your request.</p>
+                <div style="margin-top: 15px; padding: 10px; background: rgba(102, 126, 234, 0.1); border-radius: 8px; border-left: 3px solid var(--primary-color);">
+                    <i class="fas fa-redo" style="color: var(--primary-color); margin-right: 6px;"></i>
+                    <em>Please try again in a moment. If the problem continues, please refresh the page.</em>
+                </div>`;
+                addMessage(technicalErrorMessage, 'agent', agentConfigs[currentAgent].avatar);
+            } finally {
+                // Hide typing indicator and re-enable button
+                document.getElementById('typingIndicator').classList.remove('active');
+                sendButton.disabled = false;
+                sendButton.innerHTML = '<i class="fas fa-paper-plane"></i> <span>Send</span>';
+            }
+        }
+
+        function addMessage(text, sender, avatar, suggestions = null) {
+            const messagesDiv = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+
+            const time = new Date().toLocaleTimeString();
+            let suggestionsHtml = '';
+
+            if (suggestions && suggestions.length > 0 && currentAgent === 'general') {
+                suggestionsHtml = `
+                    <div class="agent-suggestions">
+                        <div class="suggestion-header">
+                            <i class="fas fa-lightbulb"></i> Specialized Agent Recommendations
+                        </div>
+                        ${suggestions.slice(0, 3).map(rec => {
+                            const confidenceClass = rec.confidence_score > 2.0 ? 'high' :
+                                                  rec.confidence_score > 1.0 ? 'medium' : 'low';
+                            return `
+                                <div class="suggestion-item">
+                                    <div class="suggestion-info">
+                                        <h4>${rec.agent_name}</h4>
+                                        <p>${rec.reason || rec.recommendation}</p>
+                                    </div>
+                                    <div class="suggestion-actions">
+                                        <span class="confidence-badge confidence-${confidenceClass}">
+                                            ${rec.confidence_score.toFixed(1)}
+                                        </span>
+                                        <button class="btn-switch" onclick="switchAgent('${rec.category}')">
+                                            Switch
+                                        </button>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+            }
+
+            messageDiv.innerHTML = `
+                <div class="message-avatar">${avatar}</div>
+                <div class="message-content">
+                    <div class="message-bubble">
+                        ${text}
+                        ${suggestionsHtml}
+                    </div>
+                    <div class="message-time">${time}</div>
+                </div>
+            `;
+
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+            // Store in message history
+            messageHistory.push({
+                text: text,
+                sender: sender,
+                avatar: avatar,
+                time: time,
+                agent: currentAgent
+            });
+        }
+
+        function formatGeneralResponse(data) {
+            let response = '';
+
+            // Add greeting header
+            response += `<div style="margin-bottom: 15px;">
+                <strong style="color: var(--primary-color); font-size: 1.1rem;">
+                    <i class="fas fa-robot"></i> Legal Analysis Complete
+                </strong>
+            </div>`;
+
+            if (data.legal_issues && data.legal_issues.length > 0) {
+                response += `<div style="margin-bottom: 15px;">
+                    <strong style="color: var(--danger-color); margin-bottom: 8px; display: block;">
+                        <i class="fas fa-exclamation-triangle"></i> Legal Issues Identified:
+                    </strong>
+                    <div style="padding-left: 10px;">`;
+                data.legal_issues.forEach(issue => {
+                    response += `<div style="margin: 6px 0;"><i class="fas fa-dot-circle" style="color: var(--danger-color); margin-right: 8px; font-size: 0.8rem;"></i>${issue}</div>`;
+                });
+                response += `</div></div>`;
+            }
+
+            if (data.applicable_laws && data.applicable_laws.length > 0) {
+                response += `<div style="margin-bottom: 15px;">
+                    <strong style="color: var(--info-color); margin-bottom: 8px; display: block;">
+                        <i class="fas fa-book-open"></i> Applicable Laws:
+                    </strong>
+                    <div style="padding-left: 10px;">`;
+                data.applicable_laws.forEach(law => {
+                    // Handle both old format (string) and new format (object)
+                    if (typeof law === 'object' && law.law_rule) {
+                        response += `<div style="margin: 6px 0;"><i class="fas fa-dot-circle" style="color: var(--info-color); margin-right: 8px; font-size: 0.8rem;"></i><strong>${law.law_rule}</strong> - ${law.description || 'N/A'}</div>`;
+                    } else {
+                        response += `<div style="margin: 6px 0;"><i class="fas fa-dot-circle" style="color: var(--info-color); margin-right: 8px; font-size: 0.8rem;"></i>${law}</div>`;
+                    }
+                });
+                response += `</div></div>`;
+            }
+
+            if (data.recommendations && data.recommendations.length > 0) {
+                response += `<div style="margin-bottom: 15px;">
+                    <strong style="color: var(--success-color); margin-bottom: 8px; display: block;">
+                        <i class="fas fa-lightbulb"></i> Recommendations:
+                    </strong>
+                    <div style="padding-left: 10px;">`;
+                data.recommendations.forEach(rec => {
+                    response += `<div style="margin: 6px 0;"><i class="fas fa-dot-circle" style="color: var(--success-color); margin-right: 8px; font-size: 0.8rem;"></i>${rec}</div>`;
+                });
+                response += `</div></div>`;
+            }
+
+            if (data.risk_assessment && Object.keys(data.risk_assessment).length > 0) {
+                response += `<div style="margin-bottom: 15px;">
+                    <strong style="color: var(--warning-color); margin-bottom: 8px; display: block;">
+                        <i class="fas fa-shield-alt"></i> Risk Assessment:
+                    </strong>
+                    <div style="padding-left: 10px;">`;
+                Object.entries(data.risk_assessment).forEach(([key, value]) => {
+                    const formattedKey = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                    response += `<div style="margin: 6px 0;"><i class="fas fa-dot-circle" style="color: var(--warning-color); margin-right: 8px; font-size: 0.8rem;"></i><strong>${formattedKey}:</strong> ${value}</div>`;
+                });
+                response += `</div></div>`;
+            }
+
+            // Add closing note if we have content
+            if (response.includes('Legal Analysis Complete')) {
+                response += `<div style="margin-top: 15px; padding: 10px; background: rgba(102, 126, 234, 0.1); border-radius: 8px; border-left: 3px solid var(--primary-color);">
+                    <i class="fas fa-info-circle" style="color: var(--primary-color); margin-right: 6px;"></i>
+                    <em>Need more specific guidance? Feel free to ask follow-up questions or switch to a specialized agent!</em>
+                </div>`;
+            }
+
+            return response || `<div style="margin-bottom: 15px;">
+                <strong style="color: var(--primary-color); font-size: 1.1rem;">
+                    <i class="fas fa-robot"></i> Analysis Complete
+                </strong>
+            </div>
+            <p style="margin-bottom: 12px;">I've reviewed your query and I'm ready to help.</p>
+            <div style="margin-top: 15px; padding: 10px; background: rgba(102, 126, 234, 0.1); border-radius: 8px; border-left: 3px solid var(--primary-color);">
+                <i class="fas fa-lightbulb" style="color: var(--warning-color); margin-right: 6px;"></i>
+                <em>Please provide more details about your legal issue for a comprehensive analysis!</em>
+            </div>`;
+        }
+
+        function formatSpecializedResponse(data) {
+            // Check if the response already contains a formatted_response (new format)
+            if (data.formatted_response) {
+                // Convert plain text response to HTML format
+                let formattedHtml = data.formatted_response
+                    .replace(/\n/g, '<br>')
+                    .replace(/\t/g, '&nbsp;&nbsp;&nbsp;&nbsp;');
+
+                return formattedHtml;
+            }
+
+            // Fallback to old format processing for backward compatibility
+            let response = '';
+
+            // BhimLaw AI Professional Header
+            const agentName = data.agent_name || agentConfigs[currentAgent].name;
+            response += `<div style="margin-bottom: 20px; padding: 15px; background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); border-radius: 12px; color: white;">
+                <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                    <i class="fas fa-balance-scale" style="font-size: 1.5rem; margin-right: 12px;"></i>
+                    <div>
+                        <h3 style="margin: 0; font-size: 1.2rem;">🧾 BhimLaw AI – Expert Legal Analysis</h3>
+                        <p style="margin: 0; opacity: 0.9; font-size: 0.9rem;">${agentName}</p>
+                    </div>
+                </div>
+            </div>`;
+
+            // Legal Classification
+            if (data.legal_classification) {
+                response += `<div style="margin-bottom: 20px;">
+                    <h4 style="color: var(--primary-color); margin-bottom: 12px; display: flex; align-items: center;">
+                        <i class="fas fa-gavel" style="margin-right: 8px;"></i> 🧑‍⚖️ Legal Classification
+                    </h4>
+                    <div style="background: rgba(102, 126, 234, 0.1); padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary-color);">
+                        <div style="margin-bottom: 8px;"><strong>Domain:</strong> ${data.legal_classification.domain}</div>
+                        <div style="margin-bottom: 8px;"><strong>Jurisdiction:</strong> ${data.legal_classification.jurisdiction}</div>
+                        <div><strong>Relevant Forum:</strong></div>
+                        <ul style="margin: 8px 0; padding-left: 20px;">`;
+                if (data.legal_classification.relevant_forum) {
+                    data.legal_classification.relevant_forum.forEach(forum => {
+                        response += `<li>${forum}</li>`;
+                    });
+                }
+                response += `</ul></div>
+                </div>`;
+            }
+
+            // Applicable Laws & Provisions
+            if (data.applicable_laws && data.applicable_laws.length > 0) {
+                response += `<div style="margin-bottom: 20px;">
+                    <h4 style="color: var(--info-color); margin-bottom: 12px; display: flex; align-items: center;">
+                        <i class="fas fa-book-open" style="margin-right: 8px;"></i> 📜 Applicable Laws & Provisions
+                    </h4>
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                            <thead style="background: var(--info-color); color: white;">
+                                <tr>
+                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">Law/Rule</th>
+                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">Section/Clause</th>
+                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
+                data.applicable_laws.forEach((law, index) => {
+                    const bgColor = index % 2 === 0 ? '#f8f9fa' : 'white';
+                    response += `<tr style="background: ${bgColor};">
+                        <td style="padding: 12px; border-bottom: 1px solid #eee; font-weight: 500;">${law.law_rule || law}</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #eee;">${law.section_clause || 'N/A'}</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #eee;">${law.description || 'N/A'}</td>
+                    </tr>`;
+                });
+                response += `</tbody></table></div></div>`;
+            }
+
+            // Landmark Judgments
+            if (data.landmark_judgments && data.landmark_judgments.length > 0) {
+                response += `<div style="margin-bottom: 20px;">
+                    <h4 style="color: var(--success-color); margin-bottom: 12px; display: flex; align-items: center;">
+                        <i class="fas fa-landmark" style="margin-right: 8px;"></i> 📚 Landmark Judgments
+                    </h4>
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                            <thead style="background: var(--success-color); color: white;">
+                                <tr>
+                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">Case</th>
+                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">Citation</th>
+                                    <th style="padding: 12px; text-align: left; border-bottom: 1px solid #ddd;">Principle</th>
+                                </tr>
+                            </thead>
+                            <tbody>`;
+                data.landmark_judgments.forEach((judgment, index) => {
+                    const bgColor = index % 2 === 0 ? '#f8f9fa' : 'white';
+                    response += `<tr style="background: ${bgColor};">
+                        <td style="padding: 12px; border-bottom: 1px solid #eee; font-weight: 500;">${judgment.case}</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #eee; font-family: monospace; font-size: 0.9rem;">${judgment.citation}</td>
+                        <td style="padding: 12px; border-bottom: 1px solid #eee;">${judgment.principle}</td>
+                    </tr>`;
+                });
+                response += `</tbody></table></div></div>`;
+            }
+
+            // Legal Remedy Path
+            if (data.legal_remedy_path && data.legal_remedy_path.length > 0) {
+                response += `<div style="margin-bottom: 20px;">
+                    <h4 style="color: var(--warning-color); margin-bottom: 12px; display: flex; align-items: center;">
+                        <i class="fas fa-route" style="margin-right: 8px;"></i> 🔍 Legal Remedy Path
+                    </h4>`;
+                data.legal_remedy_path.forEach((step, index) => {
+                    const stepNumber = index + 1;
+                    response += `<div style="margin-bottom: 15px; padding: 15px; background: rgba(255, 193, 7, 0.1); border-radius: 8px; border-left: 4px solid var(--warning-color);">
+                        <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                            <div style="background: var(--warning-color); color: white; border-radius: 50%; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 10px; font-size: 0.8rem;">${stepNumber}</div>
+                            <strong style="color: var(--warning-color);">${step.step}</strong>
+                        </div>
+                        <div style="margin-bottom: 8px;"><strong>Action:</strong> ${step.action}</div>
+                        <div style="margin-bottom: 8px;"><strong>Time Limit:</strong> ${step.time_limit}</div>
+                        <div style="display: flex; align-items: center;">
+                            <strong style="margin-right: 8px;">Template Available:</strong>
+                            ${step.template_available ?
+                                '<span style="color: var(--success-color);"><i class="fas fa-check-circle"></i> Yes</span>' :
+                                '<span style="color: var(--danger-color);"><i class="fas fa-times-circle"></i> No</span>'}
+                        </div>
+                    </div>`;
+                });
+                response += `</div>`;
+            }
+
+            // Additional Insights
+            if (data.additional_insights) {
+                response += `<div style="margin-bottom: 20px;">
+                    <h4 style="color: var(--info-color); margin-bottom: 12px; display: flex; align-items: center;">
+                        <i class="fas fa-lightbulb" style="margin-right: 8px;"></i> 📌 Additional Insights
+                    </h4>
+                    <div style="background: rgba(23, 162, 184, 0.1); padding: 15px; border-radius: 8px; border-left: 4px solid var(--info-color);">`;
+
+                if (data.additional_insights.bail_applicability) {
+                    const bail = data.additional_insights.bail_applicability;
+                    response += `<div style="margin-bottom: 12px;">
+                        <strong>Bail Applicability:</strong>
+                        ${bail.applicable ?
+                            '<span style="color: var(--success-color);">✅ Yes</span>' :
+                            '<span style="color: var(--danger-color);">❌ No</span>'}
+                        <div style="margin-top: 4px; font-style: italic; color: #666;">${bail.reasoning}</div>
+                    </div>`;
+                }
+
+                if (data.additional_insights.estimated_legal_fees) {
+                    response += `<div style="margin-bottom: 12px;">
+                        <strong>Estimated Legal Fees:</strong> ${data.additional_insights.estimated_legal_fees}
+                    </div>`;
+                }
+
+                if (data.additional_insights.timeline_estimate) {
+                    response += `<div style="margin-bottom: 12px;">
+                        <strong>Timeline Estimate:</strong> ${data.additional_insights.timeline_estimate}
+                    </div>`;
+                }
+
+                if (data.additional_insights.success_probability) {
+                    const success = data.additional_insights.success_probability;
+                    response += `<div style="margin-bottom: 12px;">
+                        <strong>Success Probability:</strong>
+                        <span style="color: var(--success-color); font-weight: bold;">${success.percentage || success}</span>
+                        ${success.reasoning ? `<div style="margin-top: 4px; font-style: italic; color: #666;">${success.reasoning}</div>` : ''}
+                    </div>`;
+                }
+
+                response += `</div></div>`;
+            }
+
+            // Professional Advice
+            if (data.professional_advice) {
+                response += `<div style="margin-bottom: 20px;">
+                    <h4 style="color: var(--success-color); margin-bottom: 12px; display: flex; align-items: center;">
+                        <i class="fas fa-user-tie" style="margin-right: 8px;"></i> 💼 Professional Advice
+                    </h4>`;
+
+                if (data.professional_advice.immediate_actions && data.professional_advice.immediate_actions.length > 0) {
+                    response += `<div style="margin-bottom: 15px; padding: 15px; background: rgba(40, 167, 69, 0.1); border-radius: 8px; border-left: 4px solid var(--success-color);">
+                        <strong style="color: var(--success-color); margin-bottom: 8px; display: block;">
+                            <i class="fas fa-bolt"></i> Immediate Actions:
+                        </strong>
+                        <ul style="margin: 0; padding-left: 20px;">`;
+                    data.professional_advice.immediate_actions.forEach(action => {
+                        response += `<li style="margin: 4px 0;">${action}</li>`;
+                    });
+                    response += `</ul></div>`;
+                }
+
+                if (data.professional_advice.evidence_required && data.professional_advice.evidence_required.length > 0) {
+                    response += `<div style="margin-bottom: 15px; padding: 15px; background: rgba(102, 126, 234, 0.1); border-radius: 8px; border-left: 4px solid var(--primary-color);">
+                        <strong style="color: var(--primary-color); margin-bottom: 8px; display: block;">
+                            <i class="fas fa-folder-open"></i> Evidence Required:
+                        </strong>
+                        <ul style="margin: 0; padding-left: 20px;">`;
+                    data.professional_advice.evidence_required.forEach(evidence => {
+                        response += `<li style="margin: 4px 0;">${evidence}</li>`;
+                    });
+                    response += `</ul></div>`;
+                }
+
+                if (data.professional_advice.risk_factors && data.professional_advice.risk_factors.length > 0) {
+                    response += `<div style="margin-bottom: 15px; padding: 15px; background: rgba(220, 53, 69, 0.1); border-radius: 8px; border-left: 4px solid var(--danger-color);">
+                        <strong style="color: var(--danger-color); margin-bottom: 8px; display: block;">
+                            <i class="fas fa-exclamation-triangle"></i> Risk Factors:
+                        </strong>
+                        <ul style="margin: 0; padding-left: 20px;">`;
+                    data.professional_advice.risk_factors.forEach(risk => {
+                        response += `<li style="margin: 4px 0;">${risk}</li>`;
+                    });
+                    response += `</ul></div>`;
+                }
+
+                response += `</div>`;
+            }
+
+            // Add closing note
+            response += `<div style="margin-top: 15px; padding: 10px; background: rgba(102, 126, 234, 0.1); border-radius: 8px; border-left: 3px solid var(--primary-color);">
+                <i class="fas fa-info-circle" style="color: var(--primary-color); margin-right: 6px;"></i>
+                <em>This analysis is based on my specialized knowledge in this domain. Feel free to ask for clarification or additional details!</em>
+            </div>`;
+
+            return response || `<div style="margin-bottom: 15px;">
+                <strong style="color: var(--primary-color); font-size: 1.1rem;">
+                    <i class="fas fa-user-tie"></i> ${agentName}
+                </strong>
+            </div>
+            <p style="margin-bottom: 12px;">I've reviewed your query with my specialized expertise.</p>
+            <div style="margin-top: 15px; padding: 10px; background: rgba(102, 126, 234, 0.1); border-radius: 8px; border-left: 3px solid var(--primary-color);">
+                <i class="fas fa-lightbulb" style="color: var(--warning-color); margin-right: 6px;"></i>
+                <em>Please provide more specific details about your case for a detailed specialized analysis!</em>
+            </div>`;
+        }
+
+        function clearChat() {
+            if (confirm('Are you sure you want to clear the chat history?')) {
+                const messagesDiv = document.getElementById('chatMessages');
+                const config = agentConfigs[currentAgent];
+                const clearMessage = `<div style="margin-bottom: 15px;">
+                    <strong style="color: var(--primary-color); font-size: 1.1rem;">
+                        <i class="fas fa-broom"></i> Chat Cleared
+                    </strong>
+                </div>
+                <p style="margin-bottom: 12px;">Your chat history has been cleared. I'm ready to help with a fresh start!</p>
+                <p style="margin-bottom: 12px; color: #6c757d; font-style: italic;">Current Agent: <strong>${config.name}</strong></p>
+                <div style="margin-top: 15px; padding: 10px; background: rgba(102, 126, 234, 0.1); border-radius: 8px; border-left: 3px solid var(--primary-color);">
+                    <i class="fas fa-lightbulb" style="color: var(--warning-color); margin-right: 6px;"></i>
+                    <em>How can I assist you with your legal matter today?</em>
+                </div>`;
+
+                messagesDiv.innerHTML = `
+                    <div class="message agent">
+                        <div class="message-avatar">${config.avatar}</div>
+                        <div class="message-content">
+                            <div class="message-bubble">
+                                ${clearMessage}
+                            </div>
+                            <div class="message-time">${new Date().toLocaleTimeString()}</div>
+                        </div>
+                    </div>
+                `;
+                messageHistory = [];
+                sessionId = null;
+            }
+        }
+
+        function exportChat() {
+            if (messageHistory.length === 0) {
+                alert('No chat history to export.');
+                return;
+            }
+
+            let exportText = `BhimLaw AI Chat Export - ${new Date().toLocaleString()}\n`;
+            exportText += '='.repeat(50) + '\n\n';
+
+            messageHistory.forEach(msg => {
+                exportText += `[${msg.time}] ${msg.sender.toUpperCase()} (${msg.agent}):\n`;
+                exportText += msg.text.replace(/<[^>]*>/g, '') + '\n\n';
+            });
+
+            const blob = new Blob([exportText], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `bhimlaw-ai-chat-${Date.now()}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function initializeForms() {
+            // Analysis form
+            document.getElementById('analysisForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                await handleCaseAnalysisSubmit();
+            });
+
+            // PDF Analysis form
+            document.getElementById('pdfAnalysisForm').addEventListener('submit', handlePDFAnalysisSubmit);
+
+            // File upload handler
+            document.getElementById('pdfFile').addEventListener('change', handleFileSelect);
+        }
+
+        async function handleCaseAnalysisSubmit() {
+            const form = document.getElementById('analysisForm');
+            const resultsContainer = document.getElementById('analysisResults');
+            const resultContent = document.getElementById('analysisContent');
+            const submitButton = form.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.innerHTML;
+
+            try {
+                // Show loading state
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing Case...';
+                resultContent.innerHTML = '<div style="text-align: center; padding: 20px;"><i class="fas fa-spinner fa-spin" style="font-size: 2rem; color: var(--primary-color);"></i><br><br>Performing comprehensive legal analysis...</div>';
+                resultsContainer.classList.add('show');
+
+                // Get form data
+                const formData = new FormData(form);
+                const requestData = {
+                    query: formData.get('query'),
+                    service_type: formData.get('service_type'),
+                    professional_type: formData.get('professional_type'),
+                    jurisdiction: formData.get('jurisdiction'),
+                    complexity_level: formData.get('complexity_level'),
+                    urgency_level: formData.get('urgency_level'),
+                    case_type: formData.get('case_type') || null,
+                    client_context: formData.get('client_context') || null,
+                    session_id: currentAnalysisSessionId,
+                    force_new_session: false
+                };
+
+                console.log('Sending case analysis request:', requestData);
+
+                // Make API call
+                const response = await fetch('http://localhost:5001/api/legal/analyze', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData)
+                });
+
+                console.log('Response status:', response.status);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const result = await response.json();
+                console.log('Analysis result:', result);
+
+                if (result.success) {
+                    // Store session ID for PDF download
+                    if (result.session_id) {
+                        currentAnalysisSessionId = result.session_id;
+                        // Show PDF download button
+                        const downloadBtn = document.getElementById('downloadPdfBtn');
+                        if (downloadBtn) {
+                            downloadBtn.style.display = 'inline-block';
+                        }
+                    }
+
+                    // Display dynamic results
+                    displayCaseAnalysisResults(result);
+                } else {
+                    throw new Error(result.message || 'Analysis failed');
+                }
+
+            } catch (error) {
+                console.error('Case Analysis Error:', error);
+                resultContent.innerHTML = `
+                    <div style="color: var(--danger-color); text-align: center; padding: 20px;">
+                        <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                        <h4>Analysis Error</h4>
+                        <p>${error.message}</p>
+                        <p style="font-size: 0.9em; opacity: 0.8;">Please check your connection and try again.</p>
+                    </div>
+                `;
+                resultsContainer.classList.add('show');
+            } finally {
+                // Reset button
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalButtonText;
+            }
+        }
+
+        function displayCaseAnalysisResults(result) {
+            const resultContent = document.getElementById('analysisContent');
+            const data = result.data;
+
+            let html = `
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: var(--success-color); margin-bottom: 10px;">
+                        <i class="fas fa-check-circle"></i> Legal Analysis Complete
+                    </h4>
+                    <p><strong>Processing Time:</strong> ${result.processing_time.toFixed(2)} seconds</p>
+                    <p><strong>Confidence Score:</strong> ${(data.confidence_score * 100).toFixed(1)}%</p>
+                    <p><strong>Session ID:</strong> ${result.session_id}</p>
+                </div>
+            `;
+
+            // Main Analysis
+            if (data.analysis) {
+                html += `
+                    <div style="margin-bottom: 25px;">
+                        <h5 style="color: var(--primary-color); border-bottom: 2px solid var(--primary-color); padding-bottom: 5px;">
+                            📋 Comprehensive Legal Analysis
+                        </h5>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary-color); white-space: pre-wrap; line-height: 1.6;">
+                            ${data.analysis}
+                        </div>
+                    </div>
+                `;
+            }
+
+            // Legal Issues
+            if (data.legal_issues && data.legal_issues.length > 0) {
+                html += `
+                    <div style="margin-bottom: 20px;">
+                        <h5 style="color: var(--primary-color);">⚖️ Legal Issues Identified</h5>
+                        <ul style="background: #fff3cd; padding: 15px; border-radius: 8px; border-left: 4px solid #ffc107;">
+                            ${data.legal_issues.map(issue => `<li style="margin-bottom: 8px;">${issue}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            // Applicable Laws
+            if (data.applicable_laws && data.applicable_laws.length > 0) {
+                html += `
+                    <div style="margin-bottom: 20px;">
+                        <h5 style="color: var(--primary-color);">📚 Applicable Laws & Provisions</h5>
+                        <ul style="background: #d1ecf1; padding: 15px; border-radius: 8px; border-left: 4px solid #17a2b8;">
+                            ${data.applicable_laws.map(law => `<li style="margin-bottom: 8px;">${law}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            // Precedents
+            if (data.precedents && data.precedents.length > 0) {
+                html += `
+                    <div style="margin-bottom: 20px;">
+                        <h5 style="color: var(--primary-color);">🏛️ Relevant Precedents</h5>
+                        <div style="background: #f8d7da; padding: 15px; border-radius: 8px; border-left: 4px solid #dc3545;">
+                `;
+
+                data.precedents.forEach(precedent => {
+                    if (typeof precedent === 'object') {
+                        html += `
+                            <div style="margin-bottom: 15px; padding: 10px; background: white; border-radius: 5px;">
+                                <strong>${precedent.case || precedent.title || 'Case'}</strong><br>
+                                <em>Relevance: ${precedent.relevance || 'High'}</em><br>
+                                ${precedent.principle || precedent.summary || ''}
+                                ${precedent.citation ? `<br><small>Citation: ${precedent.citation}</small>` : ''}
+                            </div>
+                        `;
+                    } else {
+                        html += `<li style="margin-bottom: 8px;">${precedent}</li>`;
+                    }
+                });
+
+                html += `</div></div>`;
+            }
+
+            // Recommendations
+            if (data.recommendations && data.recommendations.length > 0) {
+                html += `
+                    <div style="margin-bottom: 20px;">
+                        <h5 style="color: var(--primary-color);">💡 Strategic Recommendations</h5>
+                        <ul style="background: #d4edda; padding: 15px; border-radius: 8px; border-left: 4px solid #28a745;">
+                            ${data.recommendations.map(rec => `<li style="margin-bottom: 8px;">${rec}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            // Risk Factors
+            if (data.risk_factors && data.risk_factors.length > 0) {
+                html += `
+                    <div style="margin-bottom: 20px;">
+                        <h5 style="color: var(--primary-color);">⚠️ Risk Assessment</h5>
+                        <ul style="background: #f8d7da; padding: 15px; border-radius: 8px; border-left: 4px solid #dc3545;">
+                            ${data.risk_factors.map(risk => `<li style="margin-bottom: 8px;">${risk}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            // Next Steps
+            if (data.next_steps && data.next_steps.length > 0) {
+                html += `
+                    <div style="margin-bottom: 20px;">
+                        <h5 style="color: var(--primary-color);">🎯 Immediate Next Steps</h5>
+                        <ol style="background: #e2e3e5; padding: 15px; border-radius: 8px; border-left: 4px solid #6c757d;">
+                            ${data.next_steps.map(step => `<li style="margin-bottom: 8px;">${step}</li>`).join('')}
+                        </ol>
+                    </div>
+                `;
+            }
+
+            resultContent.innerHTML = html;
+        }
+
+        async function handleFormSubmission(formType, endpoint) {
+            const form = document.getElementById(`${formType}Form`);
+            const resultsContainer = document.getElementById(`${formType}Results`);
+            const resultContent = document.getElementById(`${formType}Content`);
+
+            // Get form data
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            // Show loading
+            resultContent.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing your request...';
+            resultsContainer.classList.add('show');
+
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Store session ID for PDF download
+                    if (result.session_id) {
+                        currentAnalysisSessionId = result.session_id;
+                        // Show PDF download button
+                        const downloadBtn = document.getElementById('downloadPdfBtn');
+                        if (downloadBtn) {
+                            downloadBtn.style.display = 'inline-block';
+                        }
+                    }
+
+                    resultContent.innerHTML = formatFormResponse(result.data);
+                } else {
+                    resultContent.innerHTML = `<div style="color: var(--danger-color);">Error: ${result.message}</div>`;
+                }
+
+            } catch (error) {
+                console.error('Form submission error:', error);
+                resultContent.innerHTML = '<div style="color: var(--danger-color);">An error occurred. Please try again.</div>';
+            }
+        }
+
+        function formatFormResponse(data) {
+            let html = '';
+
+            if (data.analysis) {
+                html += `<div><strong>Analysis:</strong><br>${data.analysis.replace(/\n/g, '<br>')}</div><br>`;
+            }
+
+            if (data.executive_summary) {
+                html += `<div><strong>Executive Summary:</strong><br>${data.executive_summary.replace(/\n/g, '<br>')}</div><br>`;
+            }
+
+            if (data.recommendations && data.recommendations.length > 0) {
+                html += '<div><strong>Recommendations:</strong><ul>';
+                data.recommendations.forEach(rec => {
+                    html += `<li>${rec}</li>`;
+                });
+                html += '</ul></div><br>';
+            }
+
+            if (data.legal_precedents && data.legal_precedents.length > 0) {
+                html += '<div><strong>Legal Precedents:</strong><ul>';
+                data.legal_precedents.forEach(precedent => {
+                    html += `<li><strong>${precedent.case_name}</strong> - ${precedent.relevance}</li>`;
+                });
+                html += '</ul></div><br>';
+            }
+
+            return html || 'Analysis completed successfully.';
+        }
+
+        // PDF Download Functionality
+        let lastAnalysisData = null;
+
+        function downloadPDF() {
+            if (!lastAnalysisData) {
+                alert('No analysis data available for PDF generation. Please perform an analysis first.');
+                return;
+            }
+
+            // Show loading state
+            const pdfBtn = document.getElementById('pdfDownloadBtn');
+            const originalText = pdfBtn.innerHTML;
+            pdfBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating...';
+            pdfBtn.disabled = true;
+
+            // Prepare PDF request data
+            const pdfRequest = {
+                analysis_data: lastAnalysisData,
+                agent_info: {
+                    agent_name: agentConfigs[currentAgent].name,
+                    specialization: agentConfigs[currentAgent].description
+                }
+            };
+
+            // Generate PDF
+            fetch('http://localhost:5001/api/generate-pdf', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(pdfRequest)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('PDF generation failed');
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                // Create download link
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.style.display = 'none';
+                a.href = url;
+
+                // Generate filename
+                const timestamp = new Date().toISOString().slice(0, 19).replace(/:/g, '-');
+                const caseType = lastAnalysisData.case_type || 'General';
+                a.download = `BhimLaw_Analysis_${caseType}_${timestamp}.pdf`;
+
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+
+                // Show success message
+                addMessage('✅ PDF report generated and downloaded successfully!', 'agent', '🤖');
+            })
+            .catch(error => {
+                console.error('PDF generation error:', error);
+                addMessage('❌ Failed to generate PDF report. Please try again.', 'agent', '🤖');
+            })
+            .finally(() => {
+                // Restore button state
+                pdfBtn.innerHTML = originalText;
+                pdfBtn.disabled = false;
+            });
+        }
+
+        function showPDFButton() {
+            const pdfBtn = document.getElementById('pdfDownloadBtn');
+            if (pdfBtn) {
+                pdfBtn.style.display = 'inline-flex';
+            }
+        }
+
+        function hidePDFButton() {
+            const pdfBtn = document.getElementById('pdfDownloadBtn');
+            if (pdfBtn) {
+                pdfBtn.style.display = 'none';
+            }
+        }
+
+        // Update the sendMessage function to store analysis data and show PDF button
+        const originalSendMessage = sendMessage;
+        sendMessage = async function() {
+            // Hide PDF button when sending new message
+            hidePDFButton();
+            lastAnalysisData = null;
+
+            // Call original function
+            await originalSendMessage();
+        };
+
+        // Function to handle successful analysis response
+        function handleAnalysisSuccess(response) {
+            if (response && response.analysis) {
+                lastAnalysisData = response.analysis;
+                showPDFButton();
+            }
+        }
+
+        // PDF Analysis Functions
+        function toggleAnalysisType() {
+            const selector = document.getElementById('analysisTypeSelector');
+            const textForm = document.getElementById('analysisForm');
+            const pdfForm = document.getElementById('pdfAnalysisForm');
+
+            if (selector.value === 'pdf') {
+                textForm.style.display = 'none';
+                pdfForm.style.display = 'block';
+            } else {
+                textForm.style.display = 'block';
+                pdfForm.style.display = 'none';
+            }
+        }
+
+        function handleFileSelect(event) {
+            const file = event.target.files[0];
+            const container = event.target.closest('.file-upload-container');
+            const info = container.querySelector('.file-upload-info span');
+
+            if (file) {
+                if (file.type !== 'application/pdf') {
+                    alert('Please select a PDF file only.');
+                    event.target.value = '';
+                    return;
+                }
+
+                if (file.size > 10 * 1024 * 1024) { // 10MB limit
+                    alert('File size must be less than 10MB.');
+                    event.target.value = '';
+                    return;
+                }
+
+                container.classList.add('has-file');
+                info.textContent = `Selected: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+            } else {
+                container.classList.remove('has-file');
+                info.textContent = 'Select a PDF file containing the legal case document';
+            }
+        }
+
+        async function handlePDFAnalysisSubmit(event) {
+            event.preventDefault();
+
+            const fileInput = document.getElementById('pdfFile');
+            const legalQuery = document.getElementById('pdfLegalQuery').value;
+            const analysisType = document.getElementById('pdfAnalysisType').value;
+            const jurisdiction = document.getElementById('pdfJurisdiction').value;
+            const complexity = document.getElementById('pdfComplexity').value;
+
+            if (!fileInput.files[0]) {
+                alert('Please select a PDF file to analyze.');
+                return;
+            }
+
+            if (!legalQuery.trim()) {
+                alert('Please enter your legal query about the case.');
+                return;
+            }
+
+            const submitButton = event.target.querySelector('button[type="submit"]');
+            const originalText = submitButton.innerHTML;
+
+            try {
+                // Show loading state
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Analyzing PDF...';
+
+                // Prepare form data
+                const formData = new FormData();
+                formData.append('file', fileInput.files[0]);
+                formData.append('legal_query', legalQuery);
+                formData.append('analysis_type', analysisType);
+                formData.append('jurisdiction', jurisdiction);
+                formData.append('complexity_level', complexity);
+                formData.append('urgency_level', 'normal');
+
+                // Send request
+                const response = await fetch('http://localhost:5001/api/pdf-case-analysis', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    displayPDFAnalysisResults(data);
+                } else {
+                    displayError(data.message || 'Failed to analyze PDF case');
+                }
+
+            } catch (error) {
+                console.error('PDF Analysis Error:', error);
+                displayError('Network error occurred while analyzing PDF. Please try again.');
+            } finally {
+                // Reset button
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalText;
+            }
+        }
+
+        function displayPDFAnalysisResults(data) {
+            const resultsContainer = document.getElementById('analysisResults');
+            const resultsContent = document.getElementById('analysisContent');
+
+            let html = `
+                <div style="margin-bottom: 20px;">
+                    <h4 style="color: var(--success-color); margin-bottom: 10px;">
+                        <i class="fas fa-check-circle"></i> PDF Case Analysis Complete
+                    </h4>
+                    <p><strong>Processing Time:</strong> ${data.processing_time.toFixed(2)} seconds</p>
+                    <p><strong>Text Extracted:</strong> ${data.pdf_extraction.character_count} characters</p>
+                </div>
+            `;
+
+            // Case Summary
+            if (data.structured_analysis.case_summary) {
+                html += `
+                    <div style="margin-bottom: 20px;">
+                        <h5 style="color: var(--primary-color);">📋 Case Summary</h5>
+                        <p>${data.structured_analysis.case_summary}</p>
+                    </div>
+                `;
+            }
+
+            // Legal Issues
+            if (data.structured_analysis.legal_issues && data.structured_analysis.legal_issues.length > 0) {
+                html += `
+                    <div style="margin-bottom: 20px;">
+                        <h5 style="color: var(--primary-color);">⚖️ Legal Issues</h5>
+                        <ul>
+                            ${data.structured_analysis.legal_issues.map(issue => `<li>${issue}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            // AI Analysis
+            if (data.structured_analysis.ai_analysis) {
+                html += `
+                    <div style="margin-bottom: 20px;">
+                        <h5 style="color: var(--primary-color);">🤖 AI Legal Analysis</h5>
+                        <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; border-left: 4px solid var(--primary-color);">
+                            ${data.structured_analysis.ai_analysis.replace(/\n/g, '<br>')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            resultsContent.innerHTML = html;
+            resultsContainer.classList.add('show');
+            resultsContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function displayError(message) {
+            const resultsContainer = document.getElementById('analysisResults');
+            const resultsContent = document.getElementById('analysisContent');
+
+            resultsContent.innerHTML = `
+                <div style="color: var(--danger-color); text-align: center; padding: 20px;">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                    <h4>Analysis Error</h4>
+                    <p>${message}</p>
+                </div>
+            `;
+
+            resultsContainer.classList.add('show');
+            resultsContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // PDF Download Function
+        async function downloadAnalysisPDF() {
+            if (!currentAnalysisSessionId) {
+                alert('No analysis session found. Please perform an analysis first.');
+                return;
+            }
+
+            try {
+                const downloadBtn = document.getElementById('downloadPdfBtn');
+                const originalText = downloadBtn.innerHTML;
+
+                // Show loading state
+                downloadBtn.disabled = true;
+                downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...';
+
+                const response = await fetch('http://localhost:5001/api/legal/download-pdf', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        session_id: currentAnalysisSessionId,
+                        report_type: 'comprehensive',
+                        include_citations: true,
+                        include_precedents: true
+                    })
+                });
+
+                if (response.ok) {
+                    // Get the PDF blob
+                    const blob = await response.blob();
+
+                    // Create download link
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.style.display = 'none';
+                    a.href = url;
+
+                    // Get filename from response headers or use default
+                    const contentDisposition = response.headers.get('Content-Disposition');
+                    let filename = 'BhimLaw_AI_Analysis_Report.pdf';
+                    if (contentDisposition) {
+                        const filenameMatch = contentDisposition.match(/filename="?([^"]+)"?/);
+                        if (filenameMatch) {
+                            filename = filenameMatch[1];
+                        }
+                    }
+
+                    a.download = filename;
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    document.body.removeChild(a);
+
+                    // Show success message
+                    showNotification('PDF report downloaded successfully!', 'success');
+                } else {
+                    const errorData = await response.json();
+                    throw new Error(errorData.detail?.error || 'Failed to generate PDF');
+                }
+
+            } catch (error) {
+                console.error('PDF Download Error:', error);
+                showNotification('Failed to download PDF: ' + error.message, 'error');
+            } finally {
+                // Reset button
+                const downloadBtn = document.getElementById('downloadPdfBtn');
+                downloadBtn.disabled = false;
+                downloadBtn.innerHTML = '<i class="fas fa-download"></i> Download PDF Report';
+            }
+        }
+
+        // Show notification function
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification notification-${type}`;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 5px;
+                color: white;
+                font-weight: bold;
+                z-index: 10000;
+                max-width: 300px;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                ${type === 'success' ? 'background-color: #28a745;' : ''}
+                ${type === 'error' ? 'background-color: #dc3545;' : ''}
+                ${type === 'info' ? 'background-color: #17a2b8;' : ''}
+            `;
+            notification.textContent = message;
+
+            document.body.appendChild(notification);
+
+            // Remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 5000);
+        }
+
+        // Update the message handling to detect successful analysis
+        const originalAddMessage = addMessage;
+        addMessage = function(content, sender, avatar) {
+            originalAddMessage(content, sender, avatar);
+
+            // If this is an agent response with analysis data, try to extract it
+            if (sender === 'agent' && typeof content === 'string' && content.includes('Legal Issues')) {
+                // This is likely an analysis response, show PDF button
+                showPDFButton();
+            }
+        };
+    </script>
+</body>
+</html>

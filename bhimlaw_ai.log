@@ -1,0 +1,82 @@
+2025-07-23 22:53:44,657 - BhimLaw_AI - INFO - Specialized agents loaded successfully
+2025-07-23 22:53:44,926 - BhimLaw_PDF_Generator - INFO - BhimLaw PDF Generator initialized
+2025-07-23 22:53:44,926 - BhimLaw_AI - INFO - PDF generator loaded successfully
+2025-07-23 22:53:45,179 - BhimLaw_PDF_Processor - INFO - Legal PDF Processor initialized successfully
+2025-07-23 22:53:45,180 - BhimLaw_AI - INFO - PDF processor loaded successfully
+2025-07-23 22:53:45,338 - legal_acts_database - INFO - Legal acts database initialized successfully
+2025-07-23 22:53:45,339 - legal_acts_database - INFO - Act Constitution of India is already up to date
+2025-07-23 22:53:45,342 - legal_acts_database - INFO - Act Right to Information Act is already up to date
+2025-07-23 22:53:45,343 - legal_acts_database - INFO - Act Central Civil Services (Conduct) Rules is already up to date
+2025-07-23 22:53:45,344 - legal_acts_database - INFO - Act Environment (Protection) Act is already up to date
+2025-07-23 22:53:45,346 - legal_acts_database - INFO - Act Right to Fair Compensation and Transparency in Land Acquisition, Rehabilitation and Resettlement Act is already up to date
+2025-07-23 22:53:45,690 - legal_acts_version_control - INFO - Version control database initialized successfully
+2025-07-23 22:53:45,719 - BhimLaw_AI - INFO - Legal Acts Management System loaded successfully
+2025-07-23 22:53:45,732 - BhimLaw_AI - INFO - Legal Acts Management API endpoints added
+2025-07-23 22:53:45,778 - BhimLaw_AI - INFO - Initializing BhimLaw AI - Revolutionary AI-Powered Legal Solutions
+2025-07-23 22:53:45,778 - BhimLaw_AI - INFO - Prototype VI - Multi-Agent Architecture with Advanced AI Methodologies
+2025-07-23 22:53:45,778 - BhimLaw_AI - INFO - BhimLaw AI initialized with advanced multi-agent architecture
+2025-07-23 22:53:45,779 - BhimLaw_AI - INFO - BhimLaw AI initialized successfully
+2025-07-23 22:53:45,780 - BhimLaw_AI - INFO - AI Methodologies: NLP Engine, ML, Knowledge Graph, RAG, Legal Reasoning
+2025-07-23 22:53:45,780 - BhimLaw_AI - INFO - Legal Services: Case Analysis, Research, Document Review, Precedent Search
+2025-07-23 22:53:45,780 - BhimLaw_AI - INFO - Professional Support: Advocates, Lawyers, Judges, Researchers, Students
+2025-07-23 22:53:45,781 - BhimLaw_AI - INFO - Jurisdiction Support: India, Supreme Court, High Courts, Tribunals
+2025-07-23 22:53:45,781 - BhimLaw_AI - INFO - Knowledge Base: Constitutional, Criminal, Civil, Corporate, Family, Labor Law
+2025-07-23 22:53:45,867 - BhimLaw_AI - INFO - Starting BhimLaw AI server on port 5001
+2025-07-23 22:53:45,868 - BhimLaw_AI - INFO - Access: http://localhost:5001
+2025-07-23 22:53:45,869 - BhimLaw_AI - INFO - API Documentation: http://localhost:5001/docs
+2025-07-23 22:53:45,869 - BhimLaw_AI - INFO - Interactive API: http://localhost:5001/redoc
+2025-07-23 22:53:45,940 - BhimLaw_AI - INFO - Specialized agents loaded successfully
+2025-07-23 22:53:45,941 - BhimLaw_AI - INFO - PDF generator loaded successfully
+2025-07-23 22:53:45,941 - BhimLaw_AI - INFO - PDF processor loaded successfully
+2025-07-23 22:53:45,941 - BhimLaw_AI - INFO - Legal Acts Management System loaded successfully
+2025-07-23 22:53:45,954 - BhimLaw_AI - INFO - Legal Acts Management API endpoints added
+2025-07-23 22:53:46,024 - BhimLaw_AI - INFO - Initializing BhimLaw AI - Revolutionary AI-Powered Legal Solutions
+2025-07-23 22:53:46,024 - BhimLaw_AI - INFO - Prototype VI - Multi-Agent Architecture with Advanced AI Methodologies
+2025-07-23 22:53:46,025 - BhimLaw_AI - INFO - BhimLaw AI initialized with advanced multi-agent architecture
+2025-07-23 22:53:46,025 - BhimLaw_AI - INFO - BhimLaw AI initialized successfully
+2025-07-23 22:53:46,026 - BhimLaw_AI - INFO - AI Methodologies: NLP Engine, ML, Knowledge Graph, RAG, Legal Reasoning
+2025-07-23 22:53:46,026 - BhimLaw_AI - INFO - Legal Services: Case Analysis, Research, Document Review, Precedent Search
+2025-07-23 22:53:46,027 - BhimLaw_AI - INFO - Professional Support: Advocates, Lawyers, Judges, Researchers, Students
+2025-07-23 22:53:46,027 - BhimLaw_AI - INFO - Jurisdiction Support: India, Supreme Court, High Courts, Tribunals
+2025-07-23 22:53:46,028 - BhimLaw_AI - INFO - Knowledge Base: Constitutional, Criminal, Civil, Corporate, Family, Labor Law
+2025-07-23 22:58:35,019 - BhimLaw_AI - INFO - Specialized agents loaded successfully
+2025-07-23 22:58:35,234 - BhimLaw_PDF_Generator - INFO - BhimLaw PDF Generator initialized
+2025-07-23 22:58:35,234 - BhimLaw_AI - INFO - PDF generator loaded successfully
+2025-07-23 22:58:35,456 - BhimLaw_PDF_Processor - INFO - Legal PDF Processor initialized successfully
+2025-07-23 22:58:35,456 - BhimLaw_AI - INFO - PDF processor loaded successfully
+2025-07-23 22:58:35,585 - legal_acts_database - INFO - Legal acts database initialized successfully
+2025-07-23 22:58:35,586 - legal_acts_database - INFO - Act Constitution of India is already up to date
+2025-07-23 22:58:35,588 - legal_acts_database - INFO - Act Right to Information Act is already up to date
+2025-07-23 22:58:35,589 - legal_acts_database - INFO - Act Central Civil Services (Conduct) Rules is already up to date
+2025-07-23 22:58:35,591 - legal_acts_database - INFO - Act Environment (Protection) Act is already up to date
+2025-07-23 22:58:35,592 - legal_acts_database - INFO - Act Right to Fair Compensation and Transparency in Land Acquisition, Rehabilitation and Resettlement Act is already up to date
+2025-07-23 22:58:35,830 - legal_acts_version_control - INFO - Version control database initialized successfully
+2025-07-23 22:58:35,862 - BhimLaw_AI - INFO - Legal Acts Management System loaded successfully
+2025-07-23 22:58:35,877 - BhimLaw_AI - INFO - Legal Acts Management API endpoints added
+2025-07-23 22:58:35,923 - BhimLaw_AI - INFO - Initializing BhimLaw AI - Revolutionary AI-Powered Legal Solutions
+2025-07-23 22:58:35,923 - BhimLaw_AI - INFO - Prototype VI - Multi-Agent Architecture with Advanced AI Methodologies
+2025-07-23 22:58:35,924 - BhimLaw_AI - INFO - BhimLaw AI initialized with advanced multi-agent architecture
+2025-07-23 22:58:35,924 - BhimLaw_AI - INFO - BhimLaw AI initialized successfully
+2025-07-23 22:58:35,925 - BhimLaw_AI - INFO - AI Methodologies: NLP Engine, ML, Knowledge Graph, RAG, Legal Reasoning
+2025-07-23 22:58:35,925 - BhimLaw_AI - INFO - Legal Services: Case Analysis, Research, Document Review, Precedent Search
+2025-07-23 22:58:35,925 - BhimLaw_AI - INFO - Professional Support: Advocates, Lawyers, Judges, Researchers, Students
+2025-07-23 22:58:35,926 - BhimLaw_AI - INFO - Jurisdiction Support: India, Supreme Court, High Courts, Tribunals
+2025-07-23 22:58:35,926 - BhimLaw_AI - INFO - Knowledge Base: Constitutional, Criminal, Civil, Corporate, Family, Labor Law
+2025-07-23 22:58:36,027 - BhimLaw_AI - INFO - Starting BhimLaw AI server on port 5001
+2025-07-23 22:58:36,027 - BhimLaw_AI - INFO - Access: http://localhost:5001
+2025-07-23 22:58:36,028 - BhimLaw_AI - INFO - API Documentation: http://localhost:5001/docs
+2025-07-23 22:58:36,028 - BhimLaw_AI - INFO - Interactive API: http://localhost:5001/redoc
+2025-07-23 22:58:36,115 - BhimLaw_AI - INFO - Specialized agents loaded successfully
+2025-07-23 22:58:36,116 - BhimLaw_AI - INFO - PDF generator loaded successfully
+2025-07-23 22:58:36,116 - BhimLaw_AI - INFO - PDF processor loaded successfully
+2025-07-23 22:58:36,117 - BhimLaw_AI - INFO - Legal Acts Management System loaded successfully
+2025-07-23 22:58:36,131 - BhimLaw_AI - INFO - Legal Acts Management API endpoints added
+2025-07-23 22:58:36,176 - BhimLaw_AI - INFO - Initializing BhimLaw AI - Revolutionary AI-Powered Legal Solutions
+2025-07-23 22:58:36,176 - BhimLaw_AI - INFO - Prototype VI - Multi-Agent Architecture with Advanced AI Methodologies
+2025-07-23 22:58:36,177 - BhimLaw_AI - INFO - BhimLaw AI initialized with advanced multi-agent architecture
+2025-07-23 22:58:36,177 - BhimLaw_AI - INFO - BhimLaw AI initialized successfully
+2025-07-23 22:58:36,177 - BhimLaw_AI - INFO - AI Methodologies: NLP Engine, ML, Knowledge Graph, RAG, Legal Reasoning
+2025-07-23 22:58:36,178 - BhimLaw_AI - INFO - Legal Services: Case Analysis, Research, Document Review, Precedent Search
+2025-07-23 22:58:36,179 - BhimLaw_AI - INFO - Professional Support: Advocates, Lawyers, Judges, Researchers, Students
+2025-07-23 22:58:36,180 - BhimLaw_AI - INFO - Jurisdiction Support: India, Supreme Court, High Courts, Tribunals
+2025-07-23 22:58:36,180 - BhimLaw_AI - INFO - Knowledge Base: Constitutional, Criminal, Civil, Corporate, Family, Labor Law
