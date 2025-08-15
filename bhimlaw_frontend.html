@@ -1165,61 +1165,61 @@
                 name: 'Property & Building Violations Specialist',
                 description: 'Property Law, Building Regulations, Municipal Law',
                 avatar: '🏗️',
-                endpoint: 'http://localhost:5001/api/specialized/analyze'
+                endpoint: '/api/specialized/analyze'
             },
             environmental_health: {
                 name: 'Environmental & Public Health Specialist',
                 description: 'Environmental Law, Public Health Regulations',
                 avatar: '🌱',
-                endpoint: 'http://localhost:5001/api/specialized/analyze'
+                endpoint: '/api/specialized/analyze'
             },
             employee_services: {
                 name: 'Employee & Service Matters Specialist',
                 description: 'Service Law, Employment Law, PF/Pension Rules',
                 avatar: '👥',
-                endpoint: 'http://localhost:5001/api/specialized/analyze'
+                endpoint: '/api/specialized/analyze'
             },
             rti_transparency: {
                 name: 'RTI & Transparency Specialist',
                 description: 'Right to Information Law, Transparency Compliance',
                 avatar: '📋',
-                endpoint: 'http://localhost:5001/api/specialized/analyze'
+                endpoint: '/api/specialized/analyze'
             },
             infrastructure_works: {
                 name: 'Infrastructure & Public Works Specialist',
                 description: 'Infrastructure Law, Public Works, Construction Disputes',
                 avatar: '🚧',
-                endpoint: 'http://localhost:5001/api/specialized/analyze'
+                endpoint: '/api/specialized/analyze'
             },
             encroachment_land: {
                 name: 'Encroachment & Land Specialist',
                 description: 'Land Law, Encroachment Removal, Eviction Proceedings',
                 avatar: '🏞️',
-                endpoint: 'http://localhost:5001/api/specialized/analyze'
+                endpoint: '/api/specialized/analyze'
             },
             licensing_trade: {
                 name: 'Licensing & Trade Regulation Specialist',
                 description: 'Trade License Law, Commercial Regulations, Vendor Management',
                 avatar: '🏪',
-                endpoint: 'http://localhost:5001/api/specialized/analyze'
+                endpoint: '/api/specialized/analyze'
             },
             slum_clearance: {
                 name: 'Slum Clearance & Resettlement Specialist',
                 description: 'Slum Rehabilitation Law, Resettlement Policies, Housing Rights',
                 avatar: '🏘️',
-                endpoint: 'http://localhost:5001/api/specialized/analyze'
+                endpoint: '/api/specialized/analyze'
             },
             water_drainage: {
                 name: 'Water & Drainage Specialist',
                 description: 'Water Supply Law, Drainage Systems, Municipal Water Services',
                 avatar: '💧',
-                endpoint: 'http://localhost:5001/api/specialized/analyze'
+                endpoint: '/api/specialized/analyze'
             },
             public_nuisance: {
                 name: 'Public Nuisance Specialist',
                 description: 'Public Nuisance Law, Noise Pollution, Animal Control',
                 avatar: '🔊',
-                endpoint: 'http://localhost:5001/api/specialized/analyze'
+                endpoint: '/api/specialized/analyze'
             }
         };
 
@@ -1383,7 +1383,7 @@
                 console.log('Session ID:', sessionId);
 
                 if (currentAgent === 'general') {
-                    response = await fetch('http://localhost:5001/api/general/analyze', {
+                    response = await fetch('/api/general/analyze', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -1395,7 +1395,7 @@
                         })
                     });
                 } else {
-                    response = await fetch('http://localhost:5001/api/specialized/analyze', {
+                    response = await fetch('/api/specialized/analyze', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -1960,7 +1960,7 @@
                 console.log('Sending case analysis request:', requestData);
 
                 // Make API call
-                const response = await fetch('http://localhost:5001/api/legal/analyze', {
+                const response = await fetch('/api/legal/analyze', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -2229,7 +2229,7 @@
             };
 
             // Generate PDF
-            fetch('http://localhost:5001/api/generate-pdf', {
+            fetch('/api/generate-pdf', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -2384,7 +2384,7 @@
                 formData.append('urgency_level', 'normal');
 
                 // Send request
-                const response = await fetch('http://localhost:5001/api/pdf-case-analysis', {
+                const response = await fetch('/api/pdf-case-analysis', {
                     method: 'POST',
                     body: formData
                 });
@@ -2491,7 +2491,7 @@
                 downloadBtn.disabled = true;
                 downloadBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...';
 
-                const response = await fetch('http://localhost:5001/api/legal/download-pdf', {
+                const response = await fetch('/api/legal/download-pdf', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
