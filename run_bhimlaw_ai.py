@@ -7,6 +7,7 @@ Starts the BhimLaw AI FastAPI server
 import uvicorn
 import logging
 import sys
+import os
 
 # Configure logging
 logging.basicConfig(
@@ -18,14 +19,17 @@ logger = logging.getLogger("BhimLaw_AI_Launcher")
 def main():
     """Launch BhimLaw AI server"""
 
+    # Get port from environment variable (for Render compatibility) or default to 5001
+    port = int(os.environ.get("PORT", 5001))
+
     print("\n🏛️  BhimLaw AI - Legal Assistant")
     print("🚀 Starting server...")
-    print("📍 URL: http://localhost:5001")
-    print("📚 API Docs: http://localhost:5001/docs")
+    print(f"📍 URL: http://localhost:{port}")
+    print(f"📚 API Docs: http://localhost:{port}/docs")
     print("-" * 50)
 
-    logger.info("Starting BhimLaw AI server on port 5001")
-    
+    logger.info(f"Starting BhimLaw AI server on port {port}")
+
     try:
         # Import the FastAPI app
         from app import app
@@ -34,7 +38,7 @@ def main():
         uvicorn.run(
             app,
             host="0.0.0.0",
-            port=5001,
+            port=port,
             reload=False,
             log_level="info",
             access_log=True
